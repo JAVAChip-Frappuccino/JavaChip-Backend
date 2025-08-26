@@ -15,6 +15,9 @@ const app = express();
 //몽고db 연결 
 mongoclient.connect(url) 
   .then(client => {
+     app.listen(8080, function() {
+      console.log("포트 8080으로 서버 대기중...");
+    });
     mydb = client.db('Javachip');
     //db에 있는 데이터 출력하기
     printCollection("account");
@@ -40,10 +43,10 @@ function printCollection(collectionName) {
 }
 
 
-app.get("/api/calendar", async (req, res) => {
-  const data = await mydb.collection("calendar").find().toArray();
-  res.json(data); // 프론트로 JSON 응답
-});
+// app.get("/api/calendar", async (req, res) => {
+//   const data = await mydb.collection("calendar").find().toArray();
+//   res.json(data); // 프론트로 JSON 응답
+// });
 
 app.get("/api/calendar", async (req, res) => {
   try {
