@@ -42,6 +42,40 @@ function printCollection(collectionName) {
 }
 
 
+// 로그인 처리
+app.post('/auth/login', async (req, res) => {
+  const { username, password } = req.body;
+  try {
+    const user = await mydb.collection('account').findOne({ username, password });
+
+    if (user) {
+      res.status(200).send("success");
+    } else {
+      res.status(401).json({ success: false, message: "아이디 또는 비밀번호가 틀렸습니다" });
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("fail"); //실패
+  }
+});
+
+
+//회원가입 정보 저장
+  app.post('/auth/saveac', function(req, res) {
+    mydb.collection('account').insertOne({ //db에 정보 저장
+      username: req.body.username,
+      password: req.body.password,
+      name: req.body.name,
+      nickname: req.body.nickname,
+      email: req.body.email
+    }).then(result => {
+      res.status(200).send("success"); //성공
+    }).catch(err => {
+      res.status(500).send("fail"); //실패
+    });
+});
+
+
 // app.get("/api/calendar", async (req, res) => {
 //   const data = await mydb.collection("calendar").find().toArray();
 //   res.json(data); // 프론트로 JSON 응답
